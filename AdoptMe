@@ -1,0 +1,41 @@
+for i, v in pairs(debug.getupvalue(require(game:service "ReplicatedStorage".Fsys).load("RouterClient").init, 4)) do
+    v.Name = i
+end
+
+local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+
+local window = lib.CreateLib("Scripts", "Midnight")
+
+local adoptMeTab = window:NewTab("Adopt Me")
+local autofarmSection = adoptMeTab:NewSection("Auto-farm Settings")
+local autoBuySection = adoptMeTab:NewSection("Auto-buy Settings")
+
+local player = game:GetService("Players").LocalPlayer
+local ailments = player.PlayerGui.AilmentsMonitorApp.Ailments
+local cure = game:GetService("ReplicatedStorage").API["MonitorAPI/AddAdditive"]
+local giftshop = game:GetService("ReplicatedStorage").API:FindFirstChild("ShopAPI/BuyItem")
+
+autofarmSection:NewToggle("Baby Autofamr", nil, function(State)
+    autoFarmBaby = State
+    game:GetService("ReplicatedStorage").API["TeamAPI/ChooseTeam"]:InvokeServer("Babies", true)
+    game:GetService('RunService').Heartbeat:connect(function()
+        pcall(function()
+            if autoFarmBaby then
+                if ailments:FindFirstChild("hungry") then cure:FireServer("hungry", 1) end
+                if ailments:FindFirstChild("sleepy") then cure:FireServer("sleepy", 1) end
+                if ailments:FindFirstChild("thirsty") then cure:FireServer("thirsty", 1) end
+                if ailments:FindFirstChild("bored") then cure:FireServer("bored", 1) end
+                if ailments:FindFirstChild("dirty") then cure:FireServer("dirty", 1) end
+                if ailments:FindFirstChild("camping") then cure:FireServer("camping", 1) end
+                if ailments:FindFirstChild("sick") then cure:FireServer("sick", 1) end
+                if ailments:FindFirstChild("school") then cure:FireServer("school", 1) end
+                if ailments:FindFirstChild("hot_spring") then cure:FireServer("hot_spring", 1) end
+            end end) end) end)
+
+autofarmSection:NewToggle("Auto paycheck", nil, function(State)
+    paycheck = State
+    while paycheck do 
+        wait(1)
+        game:GetService("ReplicatedStorage").API["PayAPI/CashOut"]:InvokeServer()
+    end 
+end)
