@@ -1,0 +1,36 @@
+local legendsOfSpeedTab = window:NewTab("Legends Of Speed")
+local settingsSection = legendsOfSpeedTab:NewSection("Settings")
+
+
+settingsSection:NewToggle("Auto Orbs", nil, function(State)
+    autoFarmOrb = State
+    game:GetService('RunService').Heartbeat:connect(function()
+        if autoFarmOrb then
+            game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer("collectOrb", "Orange Orb", "City")
+            game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer("collectOrb", "Gem", "City")
+end end) end)
+    
+settingsSection:NewToggle("Auto Rebirth", nil, function(State)
+    rebirth = State
+    while rebirth do
+        wait(3)
+        game:GetService("ReplicatedStorage").rEvents.rebirthEvent:FireServer("rebirthRequest")
+end end)
+
+settingsSection:NewToggle("Auto Hoops", nil, function(State)
+    hoops = State
+    game:GetService('RunService').Heartbeat:connect(function()
+        if hoops then
+            for key,value in pairs(game.Workspace.Hoops:GetChildren()) do
+                value.Transparency = 1
+                value.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+            end end end) end)
+
+settingsSection:NewToggle("Auto Race", nil, function(State)
+    race = State
+    while race do wait(1)
+        game:GetService("ReplicatedStorage").rEvents.raceEvent:FireServer("joinRace")
+        for _, v in pairs(game:GetService("Workspace").raceMaps:GetDescendants()) do
+            if v:IsA("TouchTransmitter") and v.Parent.Name == "finishPart" then
+                firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0) --0 is touch
+            end end end end)
