@@ -1,3 +1,5 @@
+local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local window = lib.CreateLib("Title", "DarkTheme")
 local legendsOfSpeedTab = window:NewTab("Legends Of Speed")
 local settingsSection = legendsOfSpeedTab:NewSection("Settings")
 
